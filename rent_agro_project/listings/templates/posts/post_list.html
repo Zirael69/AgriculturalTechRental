@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <form method="get" class="mb-4">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label for="type" class="form-label">Тип техники</label>
+                <select class="form-select" name="type" id="type">
+                    <option value="">Все</option>
+                    <option value="tractor" {% if request.GET.type == "tractor" %}selected{% endif %}>Трактор</option>
+                    <option value="combine" {% if request.GET.type == "harvester" %}selected{% endif %}>Комбайн</option>
+                    <option value="plow" {% if request.GET.type == "plow" %}selected{% endif %}>Плуг</option>
+                </select>
+            </div>
+    
+            <div class="col-md-3">
+                <label for="brand" class="form-label">Марка</label>
+                <input type="text" class="form-control" name="brand" id="brand" value="{{ request.GET.brand }}">
+            </div>
+    
+            <div class="col-md-3">
+                <label for="max_price" class="form-label">Цена до (₽)</label>
+                <input type="number" class="form-control" name="max_price" id="max_price" value="{{ request.GET.max_price }}">
+            </div>
+    
+            <div class="col-md-3">
+                <label for="min_power" class="form-label">Мощность от (л.с.)</label>
+                <input type="number" class="form-control" name="min_power" id="min_power" value="{{ request.GET.min_power }}">
+            </div>
+    
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-outline-primary mt-2">Применить фильтр</button>
+            </div>
+        </div>
+    </form>
+    <div class="row g-4">
+        {% for listing in listings %}
+            <div class="col-md-4">
+                <a href="{% url 'detail' listing.pk %}" class="card-link">
+                    <div class="card h-100 shadow-sm">
+                        {% if listing.image %}
+                            <img src="{{ listing.image.url }}" class="card-img-top" alt="{{ listing.title }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Нет фото">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ listing.title }}</h5>
+                            <p class="card-text flex-grow-1">{{ listing.description|truncatechars:100 }}</p>
+                            <p class="card-text"><strong>Тип:</strong> {{ listing.get_equipment_type_display }}</p>
+                            <p class="card-text"><strong>Мощность:</strong> {{ listing.power }} л.с.</p>
+                            <p class="card-text"><strong>Регион:</strong> {{ listing.region }}</p>
+                            <p class="card-text"><strong>Цена:</strong> {{ listing.price }} ₽/сутки</p>
+                            {% if listing.phone_number %}
+                                <p class="card-text"><strong>Телефон:</strong> {{ listing.phone_number }}</p>
+                            {% endif %}
+                            {% if listing.telegram_username %}
+                                <p class="card-text"><strong>Telegram:</strong> @{{ listing.telegram_username }}</p>
+                            {% endif %}
+                            {% if listing.instagram_username %}
+                                <p class="card-text"><strong>Instagram:</strong> @{{ listing.instagram_username }}</p>
+                            {% endif %}
+                            <p class="card-text"><small class="text-muted">Добавлено: {{ listing.owner }}</small></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <p>Нет объявлений.</p>
+        {% endfor %}
+            {% if request.user.role == 'owner' %}
+            <a href="{% url 'create_post' %}" class="btn btn-primary mb-4">Добавить объявление</a>
+            {% endif %}
+    </div>
+</div>
+{% endblock %}

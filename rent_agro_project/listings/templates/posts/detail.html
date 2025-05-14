@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container py-5">
+    <h1>{{ listing.title }}</h1>
+    <div class="row">
+        <div class="col-md-6">
+            {% if listing.image %}
+                <img src="{{ listing.image.url }}" class="img-fluid mb-4 rounded" alt="{{ listing.title }}" style="max-height: 400px; object-fit: cover;">
+            {% else %}
+                <img src="https://via.placeholder.com/400" class="img-fluid mb-4 rounded" alt="Нет фото">
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <p><strong>Описание:</strong> {{ listing.description|default:"Не указано" }}</p>
+            <p><strong>Тип техники:</strong> {{ listing.get_equipment_type_display|default:"Не указано" }}</p>
+            <p><strong>Мощность:</strong> {{ listing.power|default_if_none:"Не указано" }} л.с.</p>
+            <p><strong>Регион:</strong> {{ listing.region|default:"Не указан" }}</p>
+            <p><strong>Цена:</strong> {{ listing.price|default:"Не указана" }} ₽/сутки</p>
+            <p><strong>Добавил:</strong> {{ listing.owner|default:"Неизвестно" }}</p>
+            <p><strong>Дата добавления:</strong> {{ listing.created_at|date:"d.m.Y H:i"|default:"Не указана" }}</p>
+            <hr>
+            <h5>Контактная информация:</h5>
+            {% if listing.phone_number %}
+                <p><strong>Телефон:</strong> {{ listing.phone_number }}</p>
+            {% else %}
+                <p><strong>Телефон:</strong> Не указан</p>
+            {% endif %}
+            {% if listing.telegram_username %}
+                <p><strong>Telegram:</strong> <a href="https://t.me/{{ listing.telegram_username }}" target="_blank">@{{ listing.telegram_username }}</a></p>
+            {% else %}
+                <p><strong>Telegram:</strong> Не указан</p>
+            {% endif %}
+            {% if listing.instagram_username %}
+                <p><strong>Instagram:</strong> <a href="https://instagram.com/{{ listing.instagram_username }}" target="_blank">@{{ listing.instagram_username }}</a></p>
+            {% else %}
+                <p><strong>Instagram:</strong> Не указан</p>
+            {% endif %}
+        </div>
+    </div>
+    <a href="{% url 'post_list' %}" class="btn btn-secondary mt-3">← Назад к объявлениям</a>
+</div>
+{% endblock %}

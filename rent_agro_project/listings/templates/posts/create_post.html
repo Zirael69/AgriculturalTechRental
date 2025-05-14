@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Добавить объявление</h2>
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_title" class="form-label">Заголовок</label>
+            {{ form.title }}
+        </div>
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Описание</label>
+            {{ form.description }}
+        </div>
+        <div class="mb-3">
+            <label for="id_price" class="form-label">Цена (в сутки)</label>
+            {{ form.price }}
+        </div>
+        <div class="mb-3">
+            <label for="id_equipment_type" class="form-label">Тип техники</label>
+            {{ form.equipment_type }}
+        </div>
+        <div class="mb-3">
+            <label for="id_power" class="form-label">Мощность (л.с.)</label>
+            {{ form.power }}
+        </div>
+        <div class="mb-3">
+            <label for="id_region" class="form-label">Регион</label>
+            {{ form.region }}
+        </div>
+        <div class="mb-3">
+            <label for="id_image" class="form-label">Фото</label>
+            {{ form.image }}
+            <img id="image-preview" src="#" alt="Превью" style="display:none; max-width: 200px; margin-top: 10px;">
+        </div>
+        <div class="mb-3">
+            <label for="id_phone_number" class="form-label">Номер телефона</label>
+            {{ form.phone_number }}
+        </div>
+        <div class="mb-3">
+            <label for="id_telegram_username" class="form-label">Telegram username</label>
+            {{ form.telegram_username }}
+        </div>
+        <div class="mb-3">
+            <label for="id_instagram_username" class="form-label">Instagram username</label>
+            {{ form.instagram_username }}
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+</div>
+<script>
+    document.getElementById('id_image').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            document.getElementById('image-preview').src = reader.result;
+            document.getElementById('image-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(e.target.files[0]);
+    });
+</script>
+{% endblock %}

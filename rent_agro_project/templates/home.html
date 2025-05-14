@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+  
+{% block title %}RentAgroTech - Главная страница {% endblock title %}
+{% block content %}
+{% load static %}
+<section class="hero-section">
+  <div class="container" style="position: absolute; z-index: 2; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <h1 class="display-4 fw-bold">Добро пожаловать в RentAgroTech</h1>
+    <p class="lead">Аренда сельскохозяйственной техники по лучшим ценам</p>
+    <a href="{% url 'post_list' %}" class="btn btn-primary btn-lg mt-3">Начать поиск</a>
+  </div>
+  <!-- затемнение фона -->
+  <div class="darkening"></div>
+</section>
+{% endblock %}
